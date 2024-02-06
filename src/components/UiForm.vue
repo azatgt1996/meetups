@@ -1,5 +1,5 @@
 <template>
-  <form class="form" @submit.prevent="$emit('submit', $event)">
+  <form class="form" @submit.prevent="emit('submit', $event)">
     <slot />
 
     <div v-if="$slots.buttons" class="form__buttons">
@@ -12,12 +12,9 @@
   </form>
 </template>
 
-<script>
-export default {
-  name: 'UiForm',
+<script setup>
 
-  emits: ['submit'],
-};
+const emit = defineEmits(['submit'])
 </script>
 
 <style scoped>

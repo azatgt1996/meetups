@@ -1,13 +1,35 @@
 <template>
-  <div>Task 04-vue-router/02-TheToaster</div>
+  <div class="toasts">
+    <UiToast v-for="item in toastList" :text="item.text" :type="item.type" :key="item.id" />
+  </div>
 </template>
 
-<script>
-// TODO: Task 04-vue-router/02-TheToaster
+<script setup>
+import { ref } from 'vue'
+import UiToast from './UiToast.vue';
 
-export default {
-  name: 'TheToaster',
-};
+const props = defineProps({
+  delay: { type: Number, default: 5000 }
+})
+
+let counter = 0;
+
+const toastList = ref([])
+
+const toast = (text, type, delay = props.delay) => {
+  const id = counter++
+  toastList.value.push({ id, text, type })
+
+  setTimeout(() => {
+    toastList.value = toastList.value.filter(t => t.id !== id)
+  }, delay)
+}
+
+const success = (text) => toast(text, 'success')
+
+const error = (text) => toast(text, 'error')
+
+defineExpose({ success, error })
 </script>
 
 <style scoped>
@@ -44,7 +66,7 @@ export default {
   width: auto;
 }
 
-.toast + .toast {
+.toast+.toast {
   margin-top: 20px;
 }
 

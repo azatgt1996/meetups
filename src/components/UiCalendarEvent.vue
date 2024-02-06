@@ -4,17 +4,14 @@
   </component>
 </template>
 
-<script>
-export default {
-  name: 'UiCalendarEvent',
+<script setup>
 
-  props: {
-    tag: {
-      type: [String, Object, Function],
-      default: 'div',
-    },
+defineProps({
+  tag: {
+    type: [String, Object, Function],
+    default: 'div',
   },
-};
+})
 </script>
 
 <style scoped>

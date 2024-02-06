@@ -1,13 +1,71 @@
 <template>
-  <div>Task 06-wrappers/05-UiImageUploader</div>
+  <div class="image-uploader">
+    <label class="image-uploader__preview"
+           :class="{'image-uploader__preview-loading': uploading}"
+           :style="fileUrl ? `--bg-url: url(${fileUrl})` : ''">
+      <span class="image-uploader__text">
+        {{ text }}
+      </span>
+      <input ref="input" type="file" accept="image/*"
+             class="image-uploader__input" v-bind="$attrs"
+             @change="onChange" @click="onClick"/>
+    </label>
+  </div>
 </template>
 
-<script>
-// TODO: Task 06-wrappers/05-UiImageUploader
+<script setup>
+import { computed, ref } from 'vue';
 
-export default {
-  name: 'UiImageUploader',
-};
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = defineProps({
+  preview: String,
+  uploader: Function,
+})
+
+const emit = defineEmits(['select', 'upload', 'error', 'remove'])
+
+const input = ref()
+const fileUrl = ref(props.preview)
+const uploading = ref(false)
+
+const text = computed(() => {
+  if (fileUrl.value) return 'Удалить изображение'
+  if (uploading.value) return 'Загрузка...'
+  return 'Загрузить изображение'
+})
+
+function onChange(event) {
+  const file = event.target.files[0]
+
+  if (!props.uploader)
+    fileUrl.value = URL.createObjectURL(file)
+  else {
+    uploading.value = true
+    props.uploader(file)
+      .then(result => {
+        fileUrl.value = result.image
+        emit('upload', result)
+      })
+      .catch(err => {
+        input.value.value = null
+        emit('error', err)
+      })
+      .finally(() => uploading.value = false)
+  }
+  emit('select', file)
+}
+
+function onClick(event) {
+  if (fileUrl.value) {
+    event.preventDefault()
+    input.value.value = null
+    fileUrl.value = null
+    emit('remove')
+  }
+}
 </script>
 
 <style scoped>

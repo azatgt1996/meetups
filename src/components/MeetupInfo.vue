@@ -1,15 +1,34 @@
 <template>
-  <div>Task 02-components/03-MeetupInfo</div>
+  <ul class="meetup-info">
+    <li>
+      <UiIcon class="meetup-info__icon" icon="user"/>
+      {{ organizer }}
+    </li>
+    <li>
+      <UiIcon class="meetup-info__icon" icon="map"/>
+      {{ place }}
+    </li>
+    <li>
+      <UiIcon class="meetup-info__icon" icon="cal-lg"/>
+      <time :datetime="isoDate">{{ formattedDate }}</time>
+    </li>
+  </ul>
 </template>
 
-<script>
-// TODO: Task 02-components/03-MeetupInfo
-// TODO: Add <UiIcon>
-// TODO: Add date utils
+<script setup>
+import { computed } from 'vue';
+import UiIcon from './UiIcon.vue';
+import { formatAsIsoDate, formatAsLocalDate } from '../utils/dateUtils';
 
-export default {
-  name: 'MeetupInfo',
-};
+const props = defineProps({
+  organizer: { type: String, required: true },
+  place: { type: String, required: true },
+  date: { type: Number, required: true }
+})
+
+const isoDate = computed(() => formatAsIsoDate(props.date))
+const formattedDate = computed(() => formatAsLocalDate(props.date))
+
 </script>
 
 <style scoped>

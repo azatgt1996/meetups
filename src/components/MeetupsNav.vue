@@ -16,7 +16,7 @@
   </nav>
 </template>
 
-<script>
+<script setup>
 // TODO: Task 05-vue-router/01-AuthPages
 /*
   TODO: Добавить работу с аутентификацией в навигации:
@@ -25,9 +25,6 @@
   TODO: Добавить именованные маршруты
 */
 
-export default {
-  name: 'MeetupsNav',
-};
 </script>
 
 <style scoped>

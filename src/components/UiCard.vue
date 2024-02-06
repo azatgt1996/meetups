@@ -15,26 +15,13 @@
   </component>
 </template>
 
-<script>
-export default {
-  name: 'UiCard',
+<script setup>
 
-  props: {
-    tag: {
-      type: [String, Object],
-      default: 'div',
-    },
-
-    cover: {
-      type: String,
-    },
-
-    badge: {
-      type: String,
-      required: false,
-    },
-  },
-};
+defineProps({
+  tag: { type: [String, Object], default: 'div' },
+  cover: { type: String },
+  badge: { type: String, required: false },
+})
 </script>
 
 <style scoped>

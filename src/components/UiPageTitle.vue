@@ -2,10 +2,8 @@
   <h2 class="title"><slot /></h2>
 </template>
 
-<script>
-export default {
-  name: 'UiPageTitle',
-};
+<script setup>
+
 </script>
 
 <style scoped>

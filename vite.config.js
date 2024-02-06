@@ -1,9 +1,10 @@
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 
 export default defineConfig({
-  plugins: [vue(), splitVendorChunkPlugin()],
+  plugins: [vue(), splitVendorChunkPlugin(), vueJsx()],
 
   resolve: {
     alias: {

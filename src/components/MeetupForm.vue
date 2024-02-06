@@ -59,7 +59,7 @@
   </form>
 </template>
 
-<script>
+<script setup>
 import { klona } from 'klona';
 import UiButton from './UiButton.vue';
 import UiFormGroup from './UiFormGroup.vue';
@@ -68,57 +68,32 @@ import UiInput from './UiInput.vue';
 import UiInputDate from './UiInputDate.vue';
 import MeetupAgendaItemForm from './MeetupAgendaItemForm.vue';
 import { createAgendaItem } from '../services/meetupService.js';
+import { reactive } from 'vue';
 
-export default {
-  name: 'MeetupForm',
+const props = defineProps({
+  meetup: { type: Object, required: true },
+  submitText: { type: String, default: '' },
+})
 
-  components: {
-    MeetupAgendaItemForm,
-    UiButton,
-    UiFormGroup,
-    UiImageUploader,
-    UiInput,
-    UiInputDate,
-  },
+const emit = defineEmits(['submit', 'cancel'])
 
-  props: {
-    meetup: {
-      type: Object,
-      required: true,
-    },
+const localMeetup = reactive(klona(props.meetup))
 
-    submitText: {
-      type: String,
-      default: '',
-    },
-  },
+function addAgendaItem() {
+  const newItem = createAgendaItem();
+  if (localMeetup.agenda.length) {
+    newItem.startsAt = localMeetup.agenda.at(-1).endsAt;
+  }
+  localMeetup.agenda.push(newItem);
+}
 
-  emits: ['submit', 'cancel'],
+function removeAgendaItem(index) {
+  localMeetup.agenda.splice(index, 1);
+}
 
-  data() {
-    return {
-      localMeetup: klona(this.meetup),
-    };
-  },
-
-  methods: {
-    addAgendaItem() {
-      const newItem = createAgendaItem();
-      if (this.localMeetup.agenda.length) {
-        newItem.startsAt = this.localMeetup.agenda[this.localMeetup.agenda.length - 1].endsAt;
-      }
-      this.localMeetup.agenda.push(newItem);
-    },
-
-    removeAgendaItem(index) {
-      this.localMeetup.agenda.splice(index, 1);
-    },
-
-    handleSubmit() {
-      this.$emit('submit', klona(this.localMeetup));
-    },
-  },
-};
+function handleSubmit() {
+  emit('submit', klona(localMeetup));
+}
 </script>
 
 <style scoped>
@@ -142,7 +117,7 @@ export default {
   margin: 0 0 12px 0;
 }
 
-.meetup-form__agenda-item + .meetup-form__agenda-item {
+.meetup-form__agenda-item+.meetup-form__agenda-item {
   margin-top: 24px;
 }
 

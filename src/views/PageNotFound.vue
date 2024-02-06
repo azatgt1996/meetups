@@ -9,20 +9,10 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import UiContainer from '../components/UiContainer.vue';
 
-export default {
-  name: 'PageNotFound',
-
-  components: {
-    UiContainer,
-  },
-
-  setup() {
-    // TODO: <title> "Страница не найдена | Meetups"
-  },
-};
+document.title = 'Страница не найдена'
 </script>
 
 <style scoped>

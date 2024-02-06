@@ -1,13 +1,18 @@
 <template>
-  <div><slot /> (Task 06-wrappers/04-UiCheckbox)</div>
+  <label class="checkbox">
+    <input type="checkbox" class="checkbox__input" v-model="model" v-bind="$attrs"/>
+    <span class="checkbox__box"></span>
+    <slot/>
+  </label>
 </template>
 
-<script>
-// TODO: Task 06-wrappers/04-UiCheckbox
+<script setup>
 
-export default {
-  name: 'UiCheckbox',
-};
+const model = defineModel({ type: [Boolean, Array, Set] })
+
+defineOptions({
+  inheritAttrs: false
+})
 </script>
 
 <style scoped>

@@ -1,13 +1,18 @@
 <template>
-  <div><slot /> (Task 06-wrappers/01-UiLink)</div>
+  <component :is="tag" class="link">
+    <slot/>
+  </component>
 </template>
 
-<script>
-// TODO: Task 06-wrappers/01-UiLink
+<script setup>
 
-export default {
-  name: 'UiLink',
-};
+defineProps({
+  tag: {
+    type: String,
+    default: 'router-link',
+    validator: (value) => ['a', 'router-link'].includes(value)
+  }
+})
 </script>
 
 <style scoped>

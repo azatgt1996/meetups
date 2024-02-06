@@ -12,27 +12,14 @@
   </UiCard>
 </template>
 
-<script>
+<script setup>
 import UiBadge from './UiBadge.vue';
 import UiCard from './UiCard.vue';
 import MeetupInfo from './MeetupInfo.vue';
 
-export default {
-  name: 'MeetupCard',
-
-  components: {
-    MeetupInfo,
-    UiBadge,
-    UiCard,
-  },
-
-  props: {
-    meetup: {
-      type: Object,
-      required: true,
-    },
-  },
-};
+defineProps({
+  meetup: { type: Object, required: true },
+})
 </script>
 
 <style scoped>

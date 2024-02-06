@@ -1,13 +1,54 @@
 <template>
-  <div>Task 06-wrappers/03-UiInput</div>
+  <div class="input-group" :class="{
+    'input-group_icon': hasIcon(),
+    'input-group_icon-left': hasLeftIcon(),
+    'input-group_icon-right': hasRightIcon()
+  }">
+    <div v-if="hasLeftIcon()" class="input-group__icon">
+      <slot name="left-icon" />
+    </div>
+
+    <component :is="multiline ? 'textarea' : 'input'" ref="input" :value="modelValue"
+      @[changeEvent]="$emit('update:modelValue', $event.target.value)" class="form-control"
+      :class="{'form-control_sm': small, 'form-control_rounded': rounded}" v-bind="$attrs" />
+
+    <div v-if="hasRightIcon()" class="input-group__icon">
+      <slot name="right-icon" />
+    </div>
+  </div>
 </template>
 
-<script>
-// TODO: Task 06-wrappers/03-UiInput
+<script setup>
+import { ref, useSlots, useAttrs, computed } from 'vue';
 
-export default {
-  name: 'UiInput',
-};
+const input = ref()
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const slots = useSlots()
+const attrs = useAttrs()
+
+const props = defineProps({
+  small: Boolean,
+  rounded: Boolean,
+  multiline: Boolean,
+  modelValue: String,
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const hasLeftIcon = () => !!slots['left-icon']
+const hasRightIcon = () => !!slots['right-icon']
+const hasIcon = () => hasLeftIcon() || hasRightIcon()
+
+const changeEvent = computed(() => attrs.modelModifiers?.lazy ? 'change' : 'input')
+
+const focus = () => input.value.focus()
+
+defineExpose({ focus })
+
 </script>
 
 <style scoped>

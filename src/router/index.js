@@ -55,9 +55,8 @@ export const routes = [
     path: '/meetups/:meetupId(\\d+)/edit',
     // TODO: Добавить страницу редактирования митапа
   },
-  // TODO: Task 05-vue-router/02-PageNotFound
   {
-    path: '/:unknownPath(.*)',
+    path: '/:pathMatch(.*)*',
     component: () => import('../views/PageNotFound.vue'),
   },
 ];

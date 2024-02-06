@@ -13,36 +13,25 @@
   </LayoutBase>
 </template>
 
-<script>
+<script setup>
 import LayoutBase from './components/LayoutBase.vue';
 import UiAlert from './components/UiAlert.vue';
 import { httpClient } from './api/httpClient/httpClient.js';
 
-export default {
-  name: 'App',
+document.title = 'Meetups'
 
-  components: {
-    UiAlert,
-    LayoutBase,
-  },
+// TODO: для авторизованных пользователей - запросить новые данные пользователя для актуализации и проверки актуальности
 
-  setup() {
-    // TODO: Установить <title> - "Meetups"
+httpClient.onUnauthenticated(() => {
+  // TODO: сессия пользователя больше не валидна - нужна обработка потери авторизации
+});
 
-    // TODO: для авторизованных пользователей - запросить новые данные пользователя для актуализации и проверки актуальности
+httpClient.onNetworkError(() => {
+  // TODO: проблема с сетью, стоит вывести тост пользователю
+});
 
-    httpClient.onUnauthenticated(() => {
-      // TODO: сессия пользователя больше не валидна - нужна обработка потери авторизации
-    });
-
-    httpClient.onNetworkError(() => {
-      // TODO: проблема с сетью, стоит вывести тост пользователю
-    });
-
-    // TODO: обработка глобальных ошибок - необработанные исключения можно залогировать и вывести тост
-    // TODO: глобальные ошибки можно поймать событиями "error" и "unhandledrejection"
-  },
-};
+// TODO: обработка глобальных ошибок - необработанные исключения можно залогировать и вывести тост
+// TODO: глобальные ошибки можно поймать событиями "error" и "unhandledrejection"
 </script>
 
 <style>

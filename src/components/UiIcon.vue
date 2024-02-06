@@ -1,5 +1,6 @@
 <template>
-  <img class="icon" :alt="icon" :src="iconSrc" />
+  <component v-if="svg" :is="iconSrc"/>
+  <img v-else class="icon" :alt="icon" :src="iconSrc" />
 </template>
 
 <script>
@@ -20,6 +21,8 @@ import Search from '../assets/icons/icon-search.svg';
 import Trash from '../assets/icons/icon-trash.svg';
 import Tv from '../assets/icons/icon-tv.svg';
 import User from '../assets/icons/icon-user.svg';
+import Calendar from '../assets/icons/icon-calendar.vue';
+import List1 from '../assets/icons/icon-list1.vue';
 
 const icons = {
   'alert-circle': AlertCircle,
@@ -39,25 +42,24 @@ const icons = {
   trash: Trash,
   tv: Tv,
   user: User,
+  calendar: Calendar,
+  list1: List1,
 };
+</script>
 
-export default {
-  name: 'UiIcon',
+<script setup>
+import { computed } from 'vue';
 
-  props: {
-    icon: {
-      type: String,
-      required: true,
-      validator: (name) => Object.keys(icons).includes(name),
-    },
+const props = defineProps({
+  icon: {
+    type: String,
+    required: true,
+    validator: (name) => Object.keys(icons).includes(name),
   },
+  svg: Boolean,
+})
 
-  computed: {
-    iconSrc() {
-      return icons[this.icon];
-    },
-  },
-};
+const iconSrc = computed(() => icons[props.icon])
 </script>
 
 <style scoped>

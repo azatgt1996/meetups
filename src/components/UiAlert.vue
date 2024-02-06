@@ -4,17 +4,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'UiAlert',
+<script setup>
 
-  props: {
-    text: {
-      type: String,
-      default: 'Error...',
-    },
-  },
-};
+const props = defineProps({
+  text: { type: String, default: 'Error...' },
+})
+
 </script>
 
 <style scoped>

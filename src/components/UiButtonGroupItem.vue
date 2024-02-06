@@ -1,13 +1,33 @@
 <template>
-  <div>Task 11-communication/01-UiButtonGroup | 11-provide-inject/01-UiButtonGroup</div>
+  <button ref="btnGroupItem" class="button-group__button" type="button" aria-selected="false" @click="onClick"
+    :class="{ 'button-group__button_active': modelVal === value }">
+    <slot />
+  </button>
 </template>
 
-<script>
-// TODO: Task 11-communication/01-UiButtonGroup | 11-provide-inject/01-UiButtonGroup
+<script setup>
+import { onMounted, ref, inject } from 'vue'
 
-export default {
-  name: 'UiButtonGroupItem',
-};
+const btnGroupItem = ref()
+
+const props = defineProps({
+  value: { required: true }
+})
+
+const componentName = inject('componentName')
+const modelVal = inject('modelVal')
+const updateModelVal = inject('updateModelVal')
+
+onMounted(() => {
+  if (componentName !== 'UiButtonGroup') {
+    console.warn('The below UiButtonGroupItem is not a child of UiButtonGroup:')
+    console.warn(btnGroupItem.value)
+  }
+})
+
+function onClick() {
+  updateModelVal(props.value)
+}
 </script>
 
 <style scoped>

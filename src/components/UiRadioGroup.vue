@@ -17,19 +17,9 @@
 
 <script setup>
 defineProps({
-  options: {
-    type: Array,
-    required: true,
-  },
-
-  modelValue: {
-    type: String,
-  },
-
-  name: {
-    type: String,
-    default: () => `radio-group`,
-  },
+  options: { type: Array, required: true },
+  modelValue: { type: String },
+  name: { type: String, default: 'radio-group' },
 });
 
 const emit = defineEmits(['update:modelValue']);

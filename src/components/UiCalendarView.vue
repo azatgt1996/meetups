@@ -1,13 +1,71 @@
 <template>
-  <div>Task 10-slots/03-UiCalendarView</div>
+  <div class="calendar-view">
+    <div class="calendar-view__controls">
+      <div class="calendar-view__controls-inner">
+        <button class="calendar-view__control-left" type="button" @click="previous" aria-label="Previous month"/>
+        <div class="calendar-view__date">{{ title }}</div>
+        <button class="calendar-view__control-right" type="button" @click="next" aria-label="Next month"/>
+      </div>
+    </div>
+
+    <div class="calendar-view__grid">
+      <div v-for="(item, index) in calendar" :key="index" tabindex="0"
+           class="calendar-view__cell" :class="{'calendar-view__cell_inactive': item.inactive}">
+        <div class="calendar-view__cell-day">{{ item.day }}</div>
+        <div class="calendar-view__cell-content">
+          <slot :date="item.date"/>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<script>
-// TODO: Task 10-slots/03-UiCalendarView
+<script setup>
+import { computed, ref } from 'vue';
 
-export default {
-  name: 'UiCalendarView',
-};
+const today = new Date()
+const firstDay = ref(new Date(today.getFullYear(), today.getMonth(), 1))
+
+function previous() {
+  const d = firstDay.value
+  firstDay.value = new Date(d.setMonth(d.getMonth() - 1))
+}
+function next() {
+  const d = firstDay.value
+  firstDay.value = new Date(d.setMonth(d.getMonth() + 1))
+}
+
+const calendar = computed(() => {
+  let day = new Date(firstDay.value)
+  let lDay = new Date(day.getFullYear(), day.getMonth() + 1, 0)
+  const _calendar = []
+
+  while (day.getDay() !== 1) {
+    day.setDate(day.getDate() - 1)
+    _calendar.push({ day: day.getDate(), date: day.valueOf(), inactive: true })
+  }
+  _calendar.reverse()
+
+  day = new Date(firstDay.value)
+  while (day <= lDay) {
+    _calendar.push({ day: day.getDate(), date: day.valueOf(), inactive: false })
+    day.setDate(day.getDate() + 1)
+  }
+
+  while (lDay.getDay() !== 0) {
+    lDay.setDate(lDay.getDate() + 1)
+    _calendar.push({ day: lDay.getDate(), date: lDay.valueOf(), inactive: true })
+  }
+
+  return _calendar
+})
+
+const title = computed(() => {
+  return firstDay.value.toLocaleDateString(
+    navigator.language,
+    { month: 'long', year: 'numeric' }
+  )
+})
 </script>
 
 <style scoped>

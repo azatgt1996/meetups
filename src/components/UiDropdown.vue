@@ -1,13 +1,45 @@
 <template>
-  <div>Task 04-vue-cli/04-UiDropdown1</div>
+  <div class="dropdown" :class="{ 'dropdown_opened': opened }">
+    <button type="button" class="dropdown__toggle" :class="{ 'dropdown__toggle_icon': hasIcon }"
+            @click="opened = !opened" :style="{width}">
+      <UiIcon v-if="currentOption?.icon" :icon="currentOption?.icon" class="dropdown__icon" />
+      <span>{{ currentOption?.text ?? title }}</span>
+    </button>
+
+    <div v-show="opened" class="dropdown__menu" role="listbox">
+      <button v-for="option in options" :key="option.value" @click="select(option)" class="dropdown__item"
+        :class="{ 'dropdown__item_icon': hasIcon }" role="option" type="button">
+        <UiIcon v-if="option.icon" :icon="option.icon" class="dropdown__icon" />
+        {{ option.text }}
+      </button>
+    </div>
+  </div>
 </template>
 
-<script>
-// TODO: Task 04-vue-cli/04-UiDropdown1
+<script setup>
+import { computed, ref } from 'vue';
+import UiIcon from './UiIcon.vue';
 
-export default {
-  name: 'UiDropdown',
-};
+const props = defineProps({
+  options: { type: Array, required: true },
+  modelValue: { required: true },
+  title: { type: String, required: true },
+  width: { type: String, default: '250px'}
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const opened = ref(false)
+
+const currentOption = computed(() => props.options.find(opt => opt.value === props.modelValue))
+
+const hasIcon = computed(() => props.options.some(opt => opt.icon))
+
+function select(option) {
+  emit('update:modelValue', option.value)
+  opened.value = false
+}
+
 </script>
 
 <style scoped>

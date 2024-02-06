@@ -24,40 +24,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
+// TODO: Добавить обработку кнопок, включая работу с API
+/*
+  TODO: Добавить тосты при успешных операциях
+        - Митап удалён
+        - Сохранено
+        - Текст ошибки в случае ошибки на API
+  */
+// TODO: Будет плюсом блокировать кнопку на время загрузки
 import MeetupCover from './MeetupCover.vue';
 import MeetupInfo from './MeetupInfo.vue';
 import UiContainer from './UiContainer.vue';
 import UiButton from './UiButton.vue';
 
-export default {
-  name: 'MeetupView',
+defineProps({
+  meetup: { type: Object, required: true },
+})
 
-  components: {
-    UiButton,
-    MeetupCover,
-    MeetupInfo,
-    UiContainer,
-  },
-
-  props: {
-    meetup: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  setup() {
-    // TODO: Добавить обработку кнопок, включая работу с API
-    /*
-      TODO: Добавить тосты при успешных операциях
-            - Митап удалён
-            - Сохранено
-            - Текст ошибки в случае ошибки на API
-     */
-    // TODO: Будет плюсом блокировать кнопку на время загрузки
-  },
-};
 </script>
 
 <style scoped>

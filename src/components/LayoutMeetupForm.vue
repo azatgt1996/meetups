@@ -7,17 +7,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import UiContainer from './UiContainer.vue';
 import UiPageTitle from './UiPageTitle.vue';
 
-export default {
-  name: 'LayoutMeetupForm',
-  components: { UiPageTitle, UiContainer },
-  props: {
-    title: String,
-  },
-};
+defineProps({
+  title: String,
+})
 </script>
 
 <style scoped>

@@ -2,29 +2,23 @@
   <span class="badge" :class="badgeClass"><slot /></span>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+
 const badgeClasses = {
   primary: 'badge_primary',
   success: 'badge_success',
 };
 
-export default {
-  name: 'UiBadge',
+const props = defineProps({
+  type: {
+    type: String,
+    required: false,
+    validator: (value) => ['primary', 'success'].includes(value)
+  }
+})
 
-  props: {
-    type: {
-      type: String,
-      required: false,
-      validator: (value) => Object.keys(badgeClasses).includes(value),
-    },
-  },
-
-  computed: {
-    badgeClass() {
-      return badgeClasses[this.type];
-    },
-  },
-};
+const badgeClass = computed(() => badgeClasses[props.type])
 </script>
 
 <style scoped>

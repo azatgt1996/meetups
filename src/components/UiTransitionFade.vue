@@ -4,12 +4,8 @@
   </Transition>
 </template>
 
-<script>
-// TODO: Task 03-sfc/04-UiTransition
+<script setup>
 
-export default {
-  name: 'UiTransitionFade',
-};
 </script>
 
 <style scoped>

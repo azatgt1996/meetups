@@ -1,13 +1,17 @@
 <template>
-  <div><slot /> (Task 06-wrappers/02-UiButton)</div>
+  <component :is="tag" class="button" :type="tag === 'button' ? 'button' : null"
+             :class="[`button_${variant}`, {button_block: block}]">
+    <slot/>
+  </component>
 </template>
 
-<script>
-// TODO: Task 06-wrappers/02-UiButton
+<script setup>
 
-export default {
-  name: 'UiButton',
-};
+const props = defineProps({
+  tag: { type: String, default: 'button' },
+  variant: { type: String, default: 'secondary' },
+  block: Boolean,
+})
 </script>
 
 <style scoped>
