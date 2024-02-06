@@ -317,7 +317,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { provide, ref } from 'vue';
 import DemoComponent from './DemoComponent.vue';
 import DemoSection from './DemoSection.vue';
@@ -412,82 +412,24 @@ const dateFilterOptions = [
   { text: 'Ожидаемые', value: 'future' },
 ];
 
-export default {
-  name: 'PageDemo',
+document.title = 'Components Demo | Meetups'
 
-  components: {
-    UiTab,
-    UiTabs,
-    DemoSection,
-    MeetupForm,
-    MeetupAgenda,
-    MeetupsCalendar,
-    MeetupsList,
-    MeetupsFooter,
-    MeetupsNav,
-    MeetupsLogo,
-    UiPageTitle,
-    UiTransitionGroupFade,
-    UiTransitionFade,
-    TheTopProgressBar,
-    MeetupCard,
-    MeetupInfo,
-    TheToaster,
-    UiRadioGroup,
-    UiLink,
-    UiImageUploader,
-    UiInputDate,
-    UiIcon,
-    UiInput,
-    UiFormGroup,
-    UiDropdown,
-    UiCheckbox,
-    DemoComponent,
-    UiCalendarEvent,
-    UiCalendarView,
-    UiCard,
-    UiButtonGroupItem,
-    UiButtonGroup,
-    UiButton,
-    UiBadge,
-    UiAlert,
-    UiContainer,
-  },
+const toc = ref({});
+const selected = ref('1') // UiButtonGroup
+const view = ref('list')
+const checkbox = ref(false) // UiCheckbox
+const selectedType = ref(undefined) // UiDropdown
+const inputValue = ref('') // UiInput
+const dateFilter = ref('all') // UiRadioGroup
+const show = ref(true) // UiTransitionFade
+const count = ref('2') // UiTransitionGroupFade
 
-  setup() {
-    const toc = ref({});
-
-    provide('demo:register-component', (section, componentName) => {
-      if (!toc.value[section]) {
-        toc.value[section] = [];
-      }
-      toc.value[section].push(componentName);
-    });
-
-    return {
-      toc,
-      // UiButtonGroup
-      selected: ref('1'),
-      view: ref('list'),
-      // UiCheckbox
-      checkbox: ref(false),
-      // UiDropdown
-      agendaItemTypes,
-      selectedType: ref(undefined),
-      // UiInput
-      inputValue: ref(''),
-      // UiRadioGroup
-      dateFilterOptions,
-      dateFilter: ref('all'),
-      // Meetups
-      meetups,
-      // UiTransitionFade
-      show: ref(true),
-      // UiTransitionGroupFade
-      count: ref('2'),
-    };
-  },
-};
+provide('demo:register-component', (section, componentName) => {
+  if (!toc.value[section]) {
+    toc.value[section] = [];
+  }
+  toc.value[section].push(componentName);
+});
 </script>
 
 <style scoped>

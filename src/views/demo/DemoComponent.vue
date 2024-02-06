@@ -9,24 +9,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { inject } from 'vue';
 import UiLink from '../../components/UiLink.vue';
 
-export default {
-  name: 'DemoComponent',
-  components: { UiLink },
+const props = defineProps({
+  name: String,
+})
 
-  props: {
-    name: String,
-  },
+const section = inject('demo:section');
+const registerComponent = inject('demo:register-component');
+registerComponent(section, props.name);
 
-  setup(props) {
-    const section = inject('demo:section');
-    const registerComponent = inject('demo:register-component');
-    registerComponent(section, props.name);
-  },
-};
 </script>
 
 <style scoped>

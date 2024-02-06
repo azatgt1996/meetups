@@ -27,7 +27,7 @@
   </UiForm>
 </template>
 
-<script>
+<script setup>
 // TODO: Task 05-vue-router/01-AuthPages
 // TODO: Добавить именованные маршруты
 import { ref } from 'vue';
@@ -38,63 +38,37 @@ import UiLink from '../components/UiLink.vue';
 import UiButton from '../components/UiButton.vue';
 import UiForm from '../components/UiForm.vue';
 
-export default {
-  name: 'PageRegister',
+// TODO: <title> "Регистрация | Meetups"
+// TODO: Добавить LayoutAuth
 
-  components: {
-    UiForm,
-    UiButton,
-    UiLink,
-    UiCheckbox,
-    UiInput,
-    UiFormGroup,
-  },
+const email = ref('');
+const fullname = ref('');
+const password = ref('');
+const password2 = ref('');
+const agree = ref(false);
 
-  setup() {
-    // TODO: <title> "Регистрация | Meetups"
-    // TODO: Добавить LayoutAuth
+const validate = () => {
+  if (password.value !== password2.value) {
+    return 'Пароли не совпадают';
+  }
+  if (!agree.value) {
+    return 'Требуется согласится с условиями';
+  }
+};
 
-    const email = ref('');
-    const fullname = ref('');
-    const password = ref('');
-    const password2 = ref('');
-    const agree = ref(false);
-
-    const validate = () => {
-      if (password.value !== password2.value) {
-        return 'Пароли не совпадают';
-      }
-      if (!agree.value) {
-        return 'Требуется согласится с условиями';
-      }
-    };
-
-    const handleSubmit = async () => {
-      const validationError = validate();
-      if (validationError) {
-        // TODO: Вывести тост с текстом ошибки
-        return;
-      }
-      /*
-        TODO: Добавить обработчик сабмита
-              - В случае успешной регистрации:
-                - Перейти на страницу входа (Task 05-vue-router/01-AuthPages)
-                - Вывести тост "Регистрация выполнена успешно"
-              - В случае неуспешной регистрации:
-                - Вывести тост с текстом ошибки с API
-       */
-    };
-
-    return {
-      email,
-      fullname,
-      password,
-      password2,
-      agree,
-      handleSubmit,
-    };
-  },
+const handleSubmit = async () => {
+  const validationError = validate();
+  if (validationError) {
+    // TODO: Вывести тост с текстом ошибки
+    return;
+  }
+  /*
+    TODO: Добавить обработчик сабмита
+          - В случае успешной регистрации:
+            - Перейти на страницу входа (Task 05-vue-router/01-AuthPages)
+            - Вывести тост "Регистрация выполнена успешно"
+          - В случае неуспешной регистрации:
+            - Вывести тост с текстом ошибки с API
+    */
 };
 </script>
-
-<style scoped></style>

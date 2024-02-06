@@ -14,7 +14,7 @@ const progress = createProgress({ router })
 const toaster = createToaster()
 const pinia = createPinia()
 
-// TODO: установить плагины: router, pinia, head(title), toaster, progress
+// подключение плагинов: router, pinia, head(title), toaster, progress
 createApp(App)
   .use(progress)
   .use(toaster)

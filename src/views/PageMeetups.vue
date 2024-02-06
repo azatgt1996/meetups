@@ -34,7 +34,7 @@
   </UiContainer>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from 'vue';
 import MeetupsList from '../components/MeetupsList.vue';
 import MeetupsCalendar from '../components/MeetupsCalendar.vue';
@@ -46,60 +46,33 @@ import UiIcon from '../components/UiIcon.vue';
 import UiButtonGroupItem from '../components/UiButtonGroupItem.vue';
 import UiFormGroup from '../components/UiFormGroup.vue';
 import UiInput from '../components/UiInput.vue';
-import UiTransitionGroupFade from '../components/UiTransitionGroupFade.vue';
 import { useMeetupsFetch } from '../composables/useMeetupsFetch.js';
 import { useMeetupsFilter } from '../composables/useMeetupsFilter.js';
 
-export default {
-  name: 'PageMeetups',
+const { meetups } = useMeetupsFetch();
 
-  components: {
-    UiTransitionGroupFade,
-    UiInput,
-    UiFormGroup,
-    UiButtonGroupItem,
-    UiIcon,
-    UiRadioGroup,
-    UiButtonGroup,
-    UiContainer,
-    UiAlert,
-  },
+const { filteredMeetups, filter, dateFilterOptions } = useMeetupsFilter(meetups);
 
-  setup() {
-    const { meetups } = useMeetupsFetch();
+const view = ref('list');
 
-    const { filteredMeetups, filter, dateFilterOptions } = useMeetupsFilter(meetups);
+/*
+  TODO: Добавить синхронизацию фильтров и view с одноимёнными query параметрами
+        - Измерение параметров фильтрации и view должны изменять query параметры маршрута
+          - date, participation, search, view
+        - При значениях по умолчанию (all, list) query параметр добавляться не должен
+        - Изменение query параметров маршрута должно приводить к изменению
+        - Вынесите эту логику в универсальный компосабл useQuerySync
+        - Будущая задача composition/useQuerySync
+*/
 
-    const view = ref('list');
+const viewComponent = computed(() => {
+  const viewToComponents = {
+    list: MeetupsList,
+    calendar: MeetupsCalendar,
+  };
+  return viewToComponents[view.value];
+});
 
-    /*
-       TODO: Добавить синхронизацию фильтров и view с одноимёнными query параметрами
-             - Измерение параметров фильтрации и view должны изменять query параметры маршрута
-               - date, participation, search, view
-             - При значениях по умолчанию (all, list) query параметр добавляться не должен
-             - Изменение query параметров маршрута должно приводить к изменению
-             - Вынесите эту логику в универсальный компосабл useQuerySync
-             - Будущая задача composition/useQuerySync
-     */
-
-    const viewComponent = computed(() => {
-      const viewToComponents = {
-        list: MeetupsList,
-        calendar: MeetupsCalendar,
-      };
-      return viewToComponents[view.value];
-    });
-
-    return {
-      meetups,
-      filter,
-      filteredMeetups,
-      dateFilterOptions,
-      view,
-      viewComponent,
-    };
-  },
-};
 </script>
 
 <style scoped>

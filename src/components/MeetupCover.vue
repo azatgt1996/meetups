@@ -12,7 +12,7 @@ const props = defineProps({
   image: String,
 })
 
-const imageUrl = computed(() => props.image ? `url(${this.image})` : 'var(--default-cover)')
+const imageUrl = computed(() => props.image ? `url(${props.image})` : 'var(--default-cover)')
 </script>
 
 <style scoped>

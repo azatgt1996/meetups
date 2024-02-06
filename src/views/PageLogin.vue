@@ -11,11 +11,13 @@
       <UiButton variant="primary" type="submit" block>Войти</UiButton>
     </template>
 
-    <template #append> Нет аккаунта? <UiLink to="/register" class="link">Зарегистрируйтесь</UiLink> </template>
+    <template #append> Нет аккаунта?
+      <UiLink to="/register" class="link">Зарегистрируйтесь</UiLink>
+    </template>
   </UiForm>
 </template>
 
-<script>
+<script setup>
 // TODO: Task 05-vue-router/01-AuthPages
 // TODO: Добавить именованные маршруты
 import { ref } from 'vue';
@@ -25,39 +27,19 @@ import UiInput from '../components/UiInput.vue';
 import UiButton from '../components/UiButton.vue';
 import UiForm from '../components/UiForm.vue';
 
-export default {
-  name: 'PageLogin',
+// TODO: <title> "Вход | Meetups"
+// TODO: Добавить LayoutAuth
 
-  components: {
-    UiForm,
-    UiButton,
-    UiInput,
-    UiLink,
-    UiFormGroup,
-  },
+/*
+  TODO: Добавить обработчик сабмита
+        - В случае успешной аутентификации:
+          - Перейти на главную страницу или from (Task 05-vue-router/01-AuthPages)
+          - Вывести тост "Авторизация прошла успешно"
+        - В случае неуспешной аутентификации:
+          - Вывести тост "Неверные учётные данные..."
+  */
 
-  setup() {
-    // TODO: <title> "Вход | Meetups"
-    // TODO: Добавить LayoutAuth
+const email = ref('');
+const password = ref('');
 
-    /*
-      TODO: Добавить обработчик сабмита
-            - В случае успешной аутентификации:
-              - Перейти на главную страницу или from (Task 05-vue-router/01-AuthPages)
-              - Вывести тост "Авторизация прошла успешно"
-            - В случае неуспешной аутентификации:
-              - Вывести тост "Неверные учётные данные..."
-     */
-
-    const email = ref('');
-    const password = ref('');
-
-    return {
-      email,
-      password,
-    };
-  },
-};
 </script>
-
-<style scoped></style>

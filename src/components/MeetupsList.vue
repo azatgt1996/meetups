@@ -1,20 +1,22 @@
 <template>
   <ul class="meetups-list">
-    <li v-for="meetup in meetups" :key="meetup.id" class="meetups-list__item">
-      <RouterLink
-        :to="{ name: 'meetup', params: { meetupId: meetup.id } }"
-        class="meetups-list__item-link"
-        tabindex="0"
-      >
-        <MeetupCard :meetup="meetup" />
-      </RouterLink>
-    </li>
+    <UiTransitionGroupFade>
+      <li v-for="meetup in meetups" :key="meetup.id" class="meetups-list__item">
+        <RouterLink
+          :to="{ name: 'meetup', params: { meetupId: meetup.id } }"
+          class="meetups-list__item-link"
+          tabindex="0"
+        >
+          <MeetupCard :meetup="meetup" />
+        </RouterLink>
+      </li>
+    </UiTransitionGroupFade>
   </ul>
 </template>
 
 <script setup>
-// TODO: Добавить <UiTransitionGroupFade>
 import MeetupCard from './MeetupCard.vue';
+import UiTransitionGroupFade from './UiTransitionGroupFade.vue';
 
 defineProps({
   meetups: { type: Array, required: true },

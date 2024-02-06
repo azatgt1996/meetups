@@ -1,7 +1,7 @@
 <template>
   <component :is="tag" class="card">
     <div class="card__col">
-      <div class="card__cover" :style="cover && { '--bg-url': `url('${cover}')` }">
+      <div class="card__cover">
         <header>
           <slot name="header" />
         </header>
@@ -16,17 +16,19 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 
-defineProps({
+const props = defineProps({
   tag: { type: [String, Object], default: 'div' },
   cover: { type: String },
   badge: { type: String, required: false },
 })
+
+const imageUrl = computed(() => props.image ? `url(${props.image})` : 'var(--default-cover)')
 </script>
 
 <style scoped>
 /* _card.css */
-/* TODO: Добавить v-bind в стили */
 .card {
   display: flex;
   flex-direction: row;
@@ -47,10 +49,9 @@ defineProps({
 }
 
 .card__cover {
-  --bg-url: var(--default-cover);
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), var(--bg-url);
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), v-bind(imageUrl);
   font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 36px; /* 40px */

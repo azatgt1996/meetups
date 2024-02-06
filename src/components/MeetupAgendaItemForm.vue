@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <UiFormGroup v-for="(el, key) in agendaItemFormSchemas[localItemType]"
+    <UiFormGroup v-for="(el, key) in agendaItemFormSchemas[localItem.type]"
                  :key="key" :label="el.label">
       <component :is="el.component" v-bind="el.props" v-model="localItem[el.props.name]"/>
     </UiFormGroup>
@@ -127,8 +127,6 @@ const props = defineProps({
 const emit = defineEmits(['update:agendaItem', 'remove'])
 
 const localItem = reactive({ ...props.agendaItem })
-
-const localItemType = computed(() => localItem.type)
 
 const remove = () => emit('remove')
 

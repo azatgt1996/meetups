@@ -5,20 +5,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { provide } from 'vue';
 
-export default {
-  name: 'DemoSection',
+const props = defineProps({
+  section: String,
+})
 
-  props: {
-    section: String,
-  },
+provide('demo:section', props.section);
 
-  setup(props) {
-    provide('demo:section', props.section);
-  },
-};
 </script>
-
-<style scoped></style>

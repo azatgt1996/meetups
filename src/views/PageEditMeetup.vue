@@ -5,42 +5,22 @@
   </UiContainer>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
 import MeetupForm from '../components/MeetupForm.vue';
 import UiAlert from '../components/UiAlert.vue';
 import UiContainer from '../components/UiContainer.vue';
 
-export default {
-  name: 'PageEditMeetup',
+defineProps({
+  meetupId: { type: Number, required: true },
+})
 
-  components: {
-    UiAlert,
-    UiContainer,
-    MeetupForm,
-  },
+// TODO: <title> "Редактирование митапа | Meetups"
+// TODO: Добавить LayoutMeetupForm
 
-  props: {
-    meetupId: {
-      type: Number,
-      required: true,
-    },
-  },
+const meetup = ref(null);
 
-  setup() {
-    // TODO: <title> "Редактирование митапа | Meetups"
-    // TODO: Добавить LayoutMeetupForm
+// TODO: При сабмите формы редактирования митапа - обновить его через API и перейти на страницу изменённого митапа
+// TODO: При нажатии на "Отмена" вернуться на страницу этого митапа
 
-    const meetup = ref(null);
-
-    // TODO: При сабмите формы редактирования митапа - обновить его через API и перейти на страницу изменённого митапа
-    // TODO: При нажатии на "Отмена" вернуться на страницу этого митапа
-
-    return {
-      meetup,
-    };
-  },
-};
 </script>
-
-<style scoped></style>

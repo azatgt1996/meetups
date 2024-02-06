@@ -2,20 +2,11 @@
   <MeetupDescription :description="meetup.description" />
 </template>
 
-<script>
+<script setup>
 import MeetupDescription from '../components/MeetupDescription.vue';
 
-export default {
-  name: 'PageMeetupDescription',
-  components: { MeetupDescription },
+defineProps({
+  meetup: { type: Object, required: true },
+})
 
-  props: {
-    meetup: {
-      type: Object,
-      required: true,
-    },
-  },
-};
 </script>
-
-<style scoped></style>
