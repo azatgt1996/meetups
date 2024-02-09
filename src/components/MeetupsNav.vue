@@ -1,6 +1,6 @@
 <template>
   <nav class="nav">
-    <NavLink v-if="$route.meta.showReturnToMeetups" :to="{ name: 'meetups' }" title="&larr; Вернуться к списку"/>
+    <NavLink v-if="$route.meta.showReturnToMeetups" :to="{ name: 'meetups' }" title="← Вернуться к списку"/>
     <!-- Ссылки гостя -->
     <NavLink auth="-" :to="{ name: 'login' }" title="Вход"/>
     <NavLink auth="-" :to="{ name: 'register' }" title="Регистрация"/>
@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="jsx">
+import { router } from "../router";
 import { useAuthStore } from "../stores/useAuthStore"
 // TODO: Task 05-vue-router/01-AuthPages
 /*

@@ -88,6 +88,6 @@ export const router = createRouter({
 });
 
 router.beforeEach(authGuard);
-router.afterEach(to => {
-  document.title = `${to.meta.title} | Meetups`
+router.afterEach((to) => {
+  if (to.meta.title) document.title = `${to.meta.title} | Meetups`
 })

@@ -6,9 +6,7 @@
           <UiTab :to="{ name: 'meetup.description' }">Описание</UiTab>
           <UiTab :to="{ name: 'meetup.agenda' }">Программа</UiTab>
         </template>
-        <template #default>
-          <RouterView :meetup="meetup" />
-        </template>
+        <RouterView :meetup="meetup"/>
       </UiTabs>
     </MeetupView>
 
@@ -44,21 +42,22 @@ const fetchMeetup = async () => {
 
   const result = await getMeetup(props.meetupId);
   if (result.success) {
+    document.title = `${result.data.title} | Meetups`
     meetup.value = result.data;
   } else {
     error.value = result.error.message;
   }
 };
 
-watch(() => props.meetupId, fetchMeetup);
+watch(() => props.meetupId, fetchMeetup, { immediate: true });
 
-const setMeetup = (value) => (meetup.value = value);
+// const setMeetup = (value) => (meetup.value = value);
 
-defineExpose({ setMeetup })
+// defineExpose({ setMeetup })
 
 </script>
 
-<script>
+<!-- <script>
 export default {
   async beforeRouteEnter(to) {
     const result = await getMeetup(+to.params.meetupId);
@@ -72,4 +71,4 @@ export default {
     }
   },
 }
-</script>
+</script> -->
