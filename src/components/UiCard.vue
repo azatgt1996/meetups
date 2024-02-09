@@ -24,7 +24,7 @@ const props = defineProps({
   badge: { type: String, required: false },
 })
 
-const imageUrl = computed(() => props.image ? `url(${props.image})` : 'var(--default-cover)')
+const coverUrl = computed(() => props.cover ? `url(${props.cover})` : 'var(--default-cover)')
 </script>
 
 <style scoped>
@@ -51,7 +51,7 @@ const imageUrl = computed(() => props.image ? `url(${props.image})` : 'var(--def
 .card__cover {
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), v-bind(imageUrl);
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), v-bind(coverUrl);
   font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 36px; /* 40px */

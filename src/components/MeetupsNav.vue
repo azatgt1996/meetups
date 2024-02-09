@@ -1,22 +1,24 @@
 <template>
   <nav class="nav">
-    <RouterLink v-if="$route.meta.showReturnToMeetups" to="/meetups" class="nav__link">
-      &larr; Вернуться к списку
-    </RouterLink>
+    <NavLink v-if="$route.meta.showReturnToMeetups" :to="{ name: 'meetups' }" title="&larr; Вернуться к списку"/>
     <!-- Ссылки гостя -->
-    <RouterLink to="/login" class="nav__link">Вход</RouterLink>
-    <RouterLink to="/register" class="nav__link">Регистрация</RouterLink>
+    <NavLink auth="-" :to="{ name: 'login' }" title="Вход"/>
+    <NavLink auth="-" :to="{ name: 'register' }" title="Регистрация"/>
     <!-- Ссылки авторизованного пользователя -->
-    <RouterLink to="/meetups?participation=attending" class="nav__link"> Мои митапы </RouterLink>
-    <RouterLink to="/meetups?participation=organizing" class="nav__link"> Организуемые митапы </RouterLink>
-    <RouterLink to="/meetups/create" class="nav__link">Создать митап</RouterLink>
-    <a href="#" class="nav__link">fullname (выйти)</a>
+    <NavLink auth="+" :to="{ name: 'meetups', query: { participation: 'attending' } }" title="Мои митапы"/>
+    <NavLink auth="+" :to="{ name: 'meetups', query: { participation: 'organizing' } }" title="Организуемые митапы"/>
+    <NavLink auth="+" :to="{ name: 'create-meetup' }" title="Создать митап"/>
+    <a v-if="authStore.isAuthenticated" href="#" class="nav__link" @click="handleLogout">
+      {{ authStore.user.fullname }} (выйти)
+    </a>
     <!-- Ссылка - не часть проекта -->
-    <RouterLink to="/demo" class="nav__link">🎨 Components Demo</RouterLink>
+    <NavLink :to="{ name: 'demo' }" title="🎨 Components Demo"/>
+    <a href="https://course-vue.javascript.ru/api/" target="_blank" class="nav__link">📄 API Docs</a>
   </nav>
 </template>
 
-<script setup>
+<script setup lang="jsx">
+import { useAuthStore } from "../stores/useAuthStore"
 // TODO: Task 05-vue-router/01-AuthPages
 /*
   TODO: Добавить работу с аутентификацией в навигации:
@@ -25,6 +27,16 @@
   TODO: Добавить именованные маршруты
 */
 
+function NavLink({to, title, auth}) { // auth + (для авторизованных), auth - (для неавторизованных)
+  const isVisible = !auth || auth == '+' && authStore.isAuthenticated || auth == '-' && !authStore.isAuthenticated
+  return isVisible && <RouterLink to={to} class="nav__link">{title}</RouterLink>
+}
+
+const authStore = useAuthStore()
+
+function handleLogout() {
+
+}
 </script>
 
 <style scoped>

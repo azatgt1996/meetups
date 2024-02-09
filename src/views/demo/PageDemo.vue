@@ -412,8 +412,6 @@ const dateFilterOptions = [
   { text: 'Ожидаемые', value: 'future' },
 ];
 
-document.title = 'Components Demo | Meetups'
-
 const toc = ref({});
 const selected = ref('1') // UiButtonGroup
 const view = ref('list')

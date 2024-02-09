@@ -18,8 +18,6 @@ import LayoutBase from './components/LayoutBase.vue';
 import UiAlert from './components/UiAlert.vue';
 import { httpClient } from './api/httpClient/httpClient.js';
 
-document.title = 'Meetups'
-
 // TODO: для авторизованных пользователей - запросить новые данные пользователя для актуализации и проверки актуальности
 
 httpClient.onUnauthenticated(() => {

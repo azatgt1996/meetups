@@ -12,7 +12,6 @@
 <script setup>
 import UiContainer from '../components/UiContainer.vue';
 
-document.title = 'Страница не найдена | Meetups'
 </script>
 
 <style scoped>

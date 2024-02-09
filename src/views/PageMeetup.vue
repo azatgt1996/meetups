@@ -58,12 +58,10 @@ const setMeetup = (value) => (meetup.value = value);
 
 <script>
 export default {
-  async beforeRouteEnter(to) {
+  async beforeRouteEnter(to) { //TODO: try remove to script setup
     const result = await getMeetup(+to.params.meetupId);
     if (result.success) {
       return (vm) => {
-        console.log('sdf'); //TODO clean it
-        document.title = `${'test'} | Meetups`
         vm.setMeetup(result.data);
       };
     } else {
