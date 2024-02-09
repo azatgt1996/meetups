@@ -28,9 +28,10 @@ import UiAlert from '../components/UiAlert.vue';
 import UiTabs from '../components/UiTabs.vue';
 import UiTab from '../components/UiTab.vue';
 import { getMeetup } from '../api/meetupsApi.js';
+import { onBeforeRouteLeave } from 'vue-router';
 
 const props = defineProps({
-  meetupId: { type: Number },
+  meetupId: { type: Number, required: true },
 })
 
 const meetup = ref(null);
@@ -51,24 +52,6 @@ const fetchMeetup = async () => {
 
 watch(() => props.meetupId, fetchMeetup, { immediate: true });
 
-// const setMeetup = (value) => (meetup.value = value);
-
-// defineExpose({ setMeetup })
+onBeforeRouteLeave(() => meetup.value = null);
 
 </script>
-
-<!-- <script>
-export default {
-  async beforeRouteEnter(to) {
-    const result = await getMeetup(+to.params.meetupId);
-    if (result.success) {
-      return (vm) => {
-        document.title = `${result.data.title} | Meetups`
-        vm.setMeetup(result.data);
-      };
-    } else {
-      return { name: 'meetups' };
-    }
-  },
-}
-</script> -->

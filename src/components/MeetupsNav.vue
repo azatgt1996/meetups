@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="jsx">
-import { router } from "../router";
 import { useAuthStore } from "../stores/useAuthStore"
 // TODO: Task 05-vue-router/01-AuthPages
 /*
