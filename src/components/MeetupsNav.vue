@@ -7,7 +7,7 @@
     <!-- Ссылки авторизованного пользователя -->
     <NavLink auth="+" :to="{ name: 'meetups', query: { participation: 'attending' } }" title="Мои митапы"/>
     <NavLink auth="+" :to="{ name: 'meetups', query: { participation: 'organizing' } }" title="Организуемые митапы"/>
-    <NavLink auth="+" :to="{ name: 'create-meetup' }" title="Создать митап"/>
+    <NavLink auth="+" :to="{ name: 'meetup-create' }" title="Создать митап"/>
     <a v-if="authStore.isAuthenticated" href="#" class="nav__link" @click="handleLogout">
       {{ authStore.user.fullname }} (выйти)
     </a>

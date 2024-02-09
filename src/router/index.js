@@ -64,13 +64,13 @@ export const routes = [
   },
   {
     path: '/meetups/create',
-    name: 'create-meetup',
+    name: 'meetup-create',
     meta: { title: 'Создание митапа' },
     // TODO: Добавить страницу создания митапа
   },
   {
     path: '/meetups/:meetupId(\\d+)/edit',
-    name: 'edit-meetup',
+    name: 'meetup-edit',
     meta: { title: 'Редактирование митапа' },
     // TODO: Добавить страницу редактирования митапа
   },

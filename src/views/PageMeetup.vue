@@ -31,8 +31,8 @@ import UiTabs from '../components/UiTabs.vue';
 import UiTab from '../components/UiTab.vue';
 import { getMeetup } from '../api/meetupsApi.js';
 
-defineProps({
-  meetupId: { type: Number, required: true },
+const props = defineProps({
+  meetupId: { type: Number },
 })
 
 const meetup = ref(null);
@@ -54,14 +54,17 @@ watch(() => props.meetupId, fetchMeetup);
 
 const setMeetup = (value) => (meetup.value = value);
 
+defineExpose({ setMeetup })
+
 </script>
 
 <script>
 export default {
-  async beforeRouteEnter(to) { //TODO: try remove to script setup
+  async beforeRouteEnter(to) {
     const result = await getMeetup(+to.params.meetupId);
     if (result.success) {
       return (vm) => {
+        document.title = `${result.data.title} | Meetups`
         vm.setMeetup(result.data);
       };
     } else {
