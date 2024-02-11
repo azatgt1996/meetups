@@ -1,6 +1,6 @@
 <template>
   <LayoutAuth title="Вход">
-    <UiForm>
+    <UiForm @submit="handleSubmit">
       <UiFormGroup label="Email">
         <UiInput v-model="email" name="email" type="email" placeholder="demo@email" required />
       </UiFormGroup>
@@ -13,15 +13,13 @@
       </template>
 
       <template #append> Нет аккаунта?
-        <UiLink to="/register" class="link">Зарегистрируйтесь</UiLink>
+        <UiLink :to="{name: 'register'}" class="link">Зарегистрируйтесь</UiLink>
       </template>
     </UiForm>
   </LayoutAuth>
 </template>
 
 <script setup>
-// TODO: Task 05-vue-router/01-AuthPages
-// TODO: Добавить именованные маршруты
 import { ref } from 'vue';
 import UiFormGroup from '../components/UiFormGroup.vue';
 import UiLink from '../components/UiLink.vue';
@@ -29,17 +27,29 @@ import UiInput from '../components/UiInput.vue';
 import UiButton from '../components/UiButton.vue';
 import UiForm from '../components/UiForm.vue';
 import LayoutAuth from '../components/LayoutAuth.vue';
+import { useToaster } from '../plugins/toaster'
+import { useAuthStore } from '../stores/useAuthStore'
+import { useRouter, useRoute } from 'vue-router';
 
-/*
-  TODO: Добавить обработчик сабмита
-        - В случае успешной аутентификации:
-          - Перейти на главную страницу или from (Task 05-vue-router/01-AuthPages)
-          - Вывести тост "Авторизация прошла успешно"
-        - В случае неуспешной аутентификации:
-          - Вывести тост "Неверные учётные данные..."
-  */
+const toaster = useToaster()
+const authStore = useAuthStore()
+const router = useRouter()
+const route = useRoute()
 
 const email = ref('');
 const password = ref('');
+
+const handleSubmit = async () => {
+  await authStore.login(email.value, password.value)
+  if (authStore.isAuthenticated) {
+    toaster.success('Авторизация прошла успешно')
+
+    const queryParams = route.query.from;
+    if (queryParams) router.push({ path: queryParams })
+    else router.push({ name: 'index' })
+  } else {
+    toaster.error('Неверные учётные данные...')
+  }
+};
 
 </script>

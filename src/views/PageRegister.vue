@@ -1,6 +1,6 @@
 <template>
   <LayoutAuth title="Регистрация">
-    <UiForm>
+    <UiForm @submit="handleSubmit">
       <UiFormGroup label="Email">
         <UiInput v-model="email" name="email" type="email" required />
       </UiFormGroup>
@@ -23,15 +23,13 @@
 
       <template #append>
         Уже есть аккаунт?
-        <UiLink to="/login">Войдите</UiLink>
+        <UiLink :to="{name: 'login'}">Войдите</UiLink>
       </template>
     </UiForm>
   </LayoutAuth>
 </template>
 
 <script setup>
-// TODO: Task 05-vue-router/01-AuthPages
-// TODO: Добавить именованные маршруты
 import { ref } from 'vue';
 import UiFormGroup from '../components/UiFormGroup.vue';
 import UiInput from '../components/UiInput.vue';
@@ -40,6 +38,11 @@ import UiLink from '../components/UiLink.vue';
 import UiButton from '../components/UiButton.vue';
 import UiForm from '../components/UiForm.vue';
 import LayoutAuth from '../components/LayoutAuth.vue';
+import { useToaster } from '../plugins/toaster'
+import { registerUser } from '../api/authApi'
+import { router } from '../router';
+
+const toaster = useToaster()
 
 const email = ref('');
 const fullname = ref('');
@@ -48,27 +51,21 @@ const password2 = ref('');
 const agree = ref(false);
 
 const validate = () => {
-  if (password.value !== password2.value) {
-    return 'Пароли не совпадают';
-  }
-  if (!agree.value) {
-    return 'Требуется согласиться с условиями';
-  }
+  if (password.value !== password2.value) return 'Пароли не совпадают'
+  if (!agree.value) return 'Требуется согласиться с условиями'
 };
 
 const handleSubmit = async () => {
   const validationError = validate();
-  if (validationError) {
-    // TODO: Вывести тост с текстом ошибки
-    return;
+  if (validationError) return toaster.error(validationError)
+
+  const user = { email: email.value, fullname: fullname.value, password: password.value }
+  const result = await registerUser(user)
+  if (result.success) {
+    toaster.success('Регистрация выполнена успешно')
+    router.push({ name: 'login' })
+  } else {
+    toaster.error(result.error.message)
   }
-  /*
-    TODO: Добавить обработчик сабмита
-          - В случае успешной регистрации:
-            - Перейти на страницу входа (Task 05-vue-router/01-AuthPages)
-            - Вывести тост "Регистрация выполнена успешно"
-          - В случае неуспешной регистрации:
-            - Вывести тост с текстом ошибки с API
-    */
 };
 </script>

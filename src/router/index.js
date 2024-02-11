@@ -17,20 +17,21 @@ export const routes = [
     meta: { title: 'Список митапов' },
     component: () => import('../views/PageMeetups.vue'),
   },
-  // TODO: Task 05-vue-router/01-AuthPages
+  
   {
     path: '/login',
     name: 'login',
-    meta: { title: 'Вход' },
+    meta: { title: 'Вход', requireGuest: true },
     component: () => import('../views/PageLogin.vue'),
     props: (to) => ({ from: to.query.from })
   },
   {
     path: '/register',
     name: 'register',
-    meta: { title: 'Регистрация' },
+    meta: { title: 'Регистрация', requireGuest: true },
     component: () => import('../views/PageRegister.vue')
   },
+  
   {
     path: '/meetups',
     name: 'meetups',
@@ -65,14 +66,14 @@ export const routes = [
   {
     path: '/meetups/create',
     name: 'meetup-create',
-    meta: { title: 'Создание митапа' },
-    // TODO: Добавить страницу создания митапа
+    meta: { title: 'Создание митапа', requireAuth: true },
+    component: () => import('../views/PageCreateMeetup.vue'),
   },
   {
     path: '/meetups/:meetupId(\\d+)/edit',
     name: 'meetup-edit',
-    meta: { title: 'Редактирование митапа' },
-    // TODO: Добавить страницу редактирования митапа
+    meta: { title: 'Редактирование митапа', requireAuth: true },
+    component: () => import('../views/PageEditMeetup.vue'),
   },
   {
     path: '/:pathMatch(.*)*',

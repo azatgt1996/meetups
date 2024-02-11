@@ -19,13 +19,6 @@
 
 <script setup lang="jsx">
 import { useAuthStore } from "../stores/useAuthStore"
-// TODO: Task 05-vue-router/01-AuthPages
-/*
-  TODO: Добавить работу с аутентификацией в навигации:
-        - Разные ссылки у гостя и авторизованного пользователя
-        - Кнопка выхода
-  TODO: Добавить именованные маршруты
-*/
 
 function NavLink({to, title, auth}) { // auth + (для авторизованных), auth - (для неавторизованных)
   const isVisible = !auth || auth == '+' && authStore.isAuthenticated || auth == '-' && !authStore.isAuthenticated
@@ -34,8 +27,9 @@ function NavLink({to, title, auth}) { // auth + (для авторизованн
 
 const authStore = useAuthStore()
 
-function handleLogout() {
-
+async function handleLogout() {
+  await authStore.logout()
+  location.reload()
 }
 </script>
 

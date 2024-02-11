@@ -17,19 +17,30 @@
 import LayoutBase from './components/LayoutBase.vue';
 import UiAlert from './components/UiAlert.vue';
 import { httpClient } from './api/httpClient/httpClient.js';
+import { useAuthStore } from './stores/useAuthStore';
+import { useToaster } from './plugins/toaster';
 
-// TODO: для авторизованных пользователей - запросить новые данные пользователя для актуализации и проверки актуальности
+const authStore = useAuthStore()
+const toaster = useToaster()
+
+if (authStore.isAuthenticated) authStore.getCurrentUser()
 
 httpClient.onUnauthenticated(() => {
-  // TODO: сессия пользователя больше не валидна - нужна обработка потери авторизации
+  delete localStorage.useToaster
+  location.reload()
 });
 
 httpClient.onNetworkError(() => {
-  // TODO: проблема с сетью, стоит вывести тост пользователю
+  toaster.error('проблема с сетью')
 });
 
-// TODO: обработка глобальных ошибок - необработанные исключения можно залогировать и вывести тост
-// TODO: глобальные ошибки можно поймать событиями "error" и "unhandledrejection"
+window.addEventListener('error', (event) => {
+  toaster.error(event.message);
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  toaster.error(event.reason);
+});
 </script>
 
 <style>
