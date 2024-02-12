@@ -1,10 +1,11 @@
 import { computed, ref } from 'vue';
+import { useQuerySync } from './useQuerySync';
 
 export function useMeetupsFilter(meetups) {
   const filter = ref({
-    date: 'all',
-    participation: 'all',
-    search: '',
+    date: useQuerySync('date', 'all'),
+    participation: useQuerySync('participation', 'all'),
+    search: useQuerySync('search', ''),
   });
 
   const dateFilterOptions = [

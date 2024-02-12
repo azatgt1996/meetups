@@ -40,9 +40,10 @@ import UiForm from '../components/UiForm.vue';
 import LayoutAuth from '../components/LayoutAuth.vue';
 import { useToaster } from '../plugins/toaster'
 import { registerUser } from '../api/authApi'
-import { router } from '../router';
+import { useRouter } from 'vue-router';
 
 const toaster = useToaster()
+const router = useRouter()
 
 const email = ref('');
 const fullname = ref('');

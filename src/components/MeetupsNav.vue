@@ -9,6 +9,7 @@
     <NavLink auth="+" :to="{ name: 'meetups', query: { participation: 'organizing' } }" title="Организуемые митапы"/>
     <NavLink auth="+" :to="{ name: 'meetup-create' }" title="Создать митап"/>
     <a v-if="authStore.isAuthenticated" href="#" class="nav__link" @click="handleLogout">
+      <img alt="avatar" :src="authStore.user.avatar" style="margin-right: 6px;"/>
       {{ authStore.user.fullname }} (выйти)
     </a>
     <!-- Ссылка - не часть проекта -->
