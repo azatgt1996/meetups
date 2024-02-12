@@ -1,7 +1,6 @@
 <template>
   <div>
     <MeetupCover :title="meetup.title" :image="meetup.image" />
-
     <UiContainer>
       <div class="meetup">
         <div class="meetup__content">
@@ -9,14 +8,19 @@
         </div>
         <div class="meetup__aside">
           <MeetupInfo :organizer="meetup.organizer" :place="meetup.place" :date="meetup.date" />
-          <!-- TODO: Добавить проверку на аутентификацию и является ли пользователь организатором митапа -->
-          <!-- TODO: Реализовать кнопки (некоторые должны быть ссылками) -->
-          <div class="meetup__aside-buttons">
-            <!-- TODO: Может добавить тут слот? -->
-            <UiButton variant="primary" class="meetup__aside-button">Редактировать</UiButton>
-            <UiButton variant="danger" class="meetup__aside-button">Удалить</UiButton>
-            <UiButton variant="secondary" class="meetup__aside-button">Отменить участие</UiButton>
-            <UiButton variant="primary" class="meetup__aside-button"> Участвовать </UiButton>
+          <div v-if="authStore.isAuthenticated" class="meetup__aside-buttons">
+            <template v-if="meetup.organizing">
+              <UiButton tag="router-link" :to="{ name: 'meetup-edit', params: { meetupId: meetup.id } }"
+                variant="primary" class="meetup__aside-button">Редактировать</UiButton>
+              <UiButton variant="danger" class="meetup__aside-button"
+                @click="handleDeleteMeetup" :disabled="disabledBtn">Удалить</UiButton>
+            </template>
+            <template v-if="!meetup.organizing">
+              <UiButton v-if="meetup.attending" @click="handleAttendMeetup" variant="secondary"
+                class="meetup__aside-button" :disabled="disabledBtn">Отменить участие</UiButton>
+              <UiButton v-if="!meetup.attending" @click="handleAttendMeetup" variant="primary"
+                class="meetup__aside-button" :disabled="disabledBtn">Участвовать</UiButton>
+            </template>
           </div>
         </div>
       </div>
@@ -25,22 +29,44 @@
 </template>
 
 <script setup>
-// TODO: Добавить обработку кнопок, включая работу с API
-/*
-  TODO: Добавить тосты при успешных операциях
-        - Митап удалён
-        - Сохранено
-        - Текст ошибки в случае ошибки на API
-  */
-// TODO: Будет плюсом блокировать кнопку на время загрузки
 import MeetupCover from './MeetupCover.vue';
 import MeetupInfo from './MeetupInfo.vue';
 import UiContainer from './UiContainer.vue';
 import UiButton from './UiButton.vue';
+import { useAuthStore } from '../stores/useAuthStore';
+import { useApi } from '../composables/useApi'
+import { attendMeetup, leaveMeetup, deleteMeetup } from '../api/meetupsApi'
+import { useRouter } from 'vue-router';
+import { ref } from 'vue'
 
-defineProps({
+const showProgress = true
+
+const authStore = useAuthStore()
+const router = useRouter()
+const disabledBtn = ref(false)
+
+const props = defineProps({
   meetup: { type: Object, required: true },
 })
+
+async function handleDeleteMeetup() {
+  const {request, result, isLoading} = useApi(deleteMeetup, {showProgress, successToast: 'Митап удалён' })
+
+  disabledBtn.value = isLoading.value
+  await request(props.meetup.id)
+  if (result.value.success) router.push({ name: 'meetups' })
+  disabledBtn.value = isLoading.value
+}
+
+async function handleAttendMeetup() {
+  const action = props.meetup.attending ? leaveMeetup : attendMeetup
+  const {request, result, isLoading} = useApi(action, {showProgress, successToast: 'Сохранено' })
+
+  disabledBtn.value = isLoading.value
+  await request(props.meetup.id)
+  if (result.value.success) router.push({ name: 'meetup', params: { meetupId: props.meetup.id } })
+  disabledBtn.value = isLoading.value
+}
 
 </script>
 
@@ -51,8 +77,7 @@ defineProps({
   margin: 48px 0 0;
 }
 
-.meetup__content {
-}
+.meetup__content {}
 
 .meetup__aside {
   margin: 40px 0;

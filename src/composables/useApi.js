@@ -1,11 +1,7 @@
 import { ref } from 'vue';
-
-/*
-  TODO: Реализовать компосабл для отправки запросов
-        - Подразумевается, что в нём будут использоваться функции, возвращающие промис с ResultContainer
-        - Но вы можете использовать и другой подход
-        - Task composition/useApi
- */
+import { router } from '../router'
+import { createProgress } from '../plugins/progress'
+import { createToaster } from '../plugins/toaster'
 
 /**
  * @template T
@@ -39,7 +35,23 @@ export function useApi(apiFunc, { showProgress = false, successToast = false, er
   const result = ref(null);
   const isLoading = ref(false);
 
-  const request = async (...args) => {};
+  const progress = createProgress({ container: '#progress', router })
+  const toaster = createToaster({ container: '#toaster' })
+
+  const request = async (...args) => {
+    isLoading.value = true
+    if (showProgress) progress.start()
+    result.value = await apiFunc(...args)
+    if (showProgress) progress.finish()
+
+    if (successToast && result.value.success)
+      toaster.success(typeof successToast === 'string' ? successToast : result.value.success)
+
+    if (errorToast && result.value.error)
+      toaster.error(typeof errorToast === 'string' ? errorToast : result.value.error.message)
+
+    isLoading.value = false
+  };
 
   return {
     request,

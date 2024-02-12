@@ -6,5 +6,5 @@ import { httpClient } from './httpClient/httpClient.js';
  * @returns {Promise<ResultContainer<ImageDto>>}
  */
 export function postImage(file) {
-  // TODO: реализовать функцию
+  return httpClient.post('/images/upload', file)
 }
