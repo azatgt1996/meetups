@@ -14,11 +14,11 @@ import { useRouter } from 'vue-router';
 import { useApi } from '../composables/useApi';
 import { postImage } from '../api/imageApi';
 import { postMeetup } from '../api/meetupsApi';
-import { createToaster } from '../plugins/toaster';
+import { useToaster } from '../plugins/toaster';
 
 const meetup = ref(createMeetup())
 const router = useRouter()
-const toaster = createToaster({ container: '#toaster' })
+const toaster = useToaster()
 
 async function handleSubmit(data) {
   if (data.imageToUpload) {

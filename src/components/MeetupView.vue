@@ -16,9 +16,9 @@
                 @click="handleDeleteMeetup" :disabled="disabledBtn">Удалить</UiButton>
             </template>
             <template v-if="!meetup.organizing">
-              <UiButton v-if="meetup.attending" @click="handleAttendMeetup" variant="secondary"
+              <UiButton v-if="attending" @click="handleAttendMeetup" variant="secondary"
                 class="meetup__aside-button" :disabled="disabledBtn">Отменить участие</UiButton>
-              <UiButton v-if="!meetup.attending" @click="handleAttendMeetup" variant="primary"
+              <UiButton v-if="!attending" @click="handleAttendMeetup" variant="primary"
                 class="meetup__aside-button" :disabled="disabledBtn">Участвовать</UiButton>
             </template>
           </div>
@@ -49,6 +49,8 @@ const props = defineProps({
   meetup: { type: Object, required: true },
 })
 
+const attending = ref(props.meetup.attending)
+
 async function handleDeleteMeetup() {
   const {request, result, isLoading} = useApi(deleteMeetup, {showProgress, successToast: 'Митап удалён' })
 
@@ -59,12 +61,12 @@ async function handleDeleteMeetup() {
 }
 
 async function handleAttendMeetup() {
-  const action = props.meetup.attending ? leaveMeetup : attendMeetup
+  const action = attending.value ? leaveMeetup : attendMeetup
   const {request, result, isLoading} = useApi(action, {showProgress, successToast: 'Сохранено' })
 
   disabledBtn.value = isLoading.value
   await request(props.meetup.id)
-  if (result.value.success) router.push({ name: 'meetup', params: { meetupId: props.meetup.id } })
+  if (result.value.success) attending.value = !attending.value
   disabledBtn.value = isLoading.value
 }
 

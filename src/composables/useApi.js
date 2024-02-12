@@ -1,5 +1,4 @@
 import { ref } from 'vue';
-import { router } from '../router'
 import { createProgress } from '../plugins/progress'
 import { createToaster } from '../plugins/toaster'
 
@@ -35,8 +34,8 @@ export function useApi(apiFunc, { showProgress = false, successToast = false, er
   const result = ref(null);
   const isLoading = ref(false);
 
-  const progress = createProgress({ container: '#progress', router })
-  const toaster = createToaster({ container: '#toaster' })
+  const progress = createProgress()
+  const toaster = createToaster()
 
   const request = async (...args) => {
     isLoading.value = true

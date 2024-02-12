@@ -44,9 +44,7 @@ export const routes = [
       showReturnToMeetups: true,
       saveScrollPosition: true,
     },
-    props: (to) => ({
-      meetupId: +to.params.meetupId,
-    }),
+    props: (to) => ({ meetupId: +to.params.meetupId }),
     redirect: (to) => ({ name: 'meetup.description', params: to.params }),
     component: () => import('../views/PageMeetup.vue'),
     children: [
@@ -73,6 +71,7 @@ export const routes = [
     path: '/meetups/:meetupId(\\d+)/edit',
     name: 'meetup-edit',
     meta: { title: 'Редактирование митапа', requireAuth: true },
+    props: (to) => ({ meetupId: +to.params.meetupId }),
     component: () => import('../views/PageEditMeetup.vue'),
   },
   {

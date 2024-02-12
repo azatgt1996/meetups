@@ -1,14 +1,15 @@
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, watchEffect, watch, toValue } from 'vue';
 import { useRoute } from 'vue-router';
+
+const toLastItem = (itemOrArray) => Array.isArray(itemOrArray) ? itemOrArray.reverse()[0] : itemOrArray;
 
 export const useQuerySync = (key, defaultValue) => {
   const queryParam = ref(defaultValue);
   const route = useRoute();
 
-  onMounted(() => {
-    if (route.query[key] && route.query[key] !== defaultValue)
-      queryParam.value = route.query[key]
-  })
+  watch(() => toValue(route.query),
+    query => queryParam.value = toLastItem(query[key]) || defaultValue,
+    { immediate: true })
 
   watchEffect(() => {
     const param = queryParam.value !== defaultValue ? queryParam.value : ''
@@ -21,7 +22,7 @@ export const useQuerySync = (key, defaultValue) => {
     const queryString = query.toString()
     const fullPath = queryString ? `${window.location.pathname}?${queryString}` : window.location.pathname
   
-    window.history.replaceState(null, '', fullPath)
+    window.history.replaceState(history.state, '', fullPath)
   })
 
   return queryParam;

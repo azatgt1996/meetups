@@ -14,7 +14,9 @@ import LayoutMeetupForm from '../components/LayoutMeetupForm.vue';
 import { useRouter } from 'vue-router';
 import { getMeetup, putMeetup } from '../api/meetupsApi';
 import { postImage } from '../api/imageApi';
-import { createToaster } from '../plugins/toaster';
+import { useToaster } from '../plugins/toaster';
+import { onBeforeRouteLeave } from 'vue-router';
+import { useApi } from '../composables/useApi';
 
 const props = defineProps({
   meetupId: { type: Number, required: true },
@@ -23,7 +25,7 @@ const props = defineProps({
 const meetup = ref(null);
 
 const router = useRouter()
-const toaster = createToaster({ container: '#toaster' })
+const toaster = useToaster()
 
 async function handleSubmit(data) {
   if (data.imageToUpload) {
